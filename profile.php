@@ -1,6 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['name']))
+//проверяем авторизировался ли пользователь
+if (!isset($_SESSION['name'])) //если нет, то перенеправлеям его на главную страницу
 {
     header('Location: index.html');
 }
@@ -20,15 +21,15 @@ if (!isset($_SESSION['name']))
         <h2>Редактирование пользователя</h2>
         <form action="" class="form" method="post">
             <?php 
-                require('php/db.php');
+                require('php/db.php'); //подключаемся к БД
                 session_start();
-                $user = $_SESSION['name'];
+                $user = $_SESSION['name']; //получаем логин текущего пользователя
                 $sql = "SELECT * from user WHERE name = '$user'";
-                $result = $mysqli -> query($sql);
+                $result = $mysqli -> query($sql); //выполняем запрос к БД
 
                 if($result){
-                    if(mysqli_num_rows($result) > 0){
-                        while($row = $result ->fetch_array()){  
+                    if(mysqli_num_rows($result) > 0){ //проверяем возвращает ли нам запрос какие-то данные
+                        while($row = $result ->fetch_array()){  //в переменную $row мы получаем результат запроса
                             ?>
                             <input type="text" placeholder="Имя" name="name" value="<?php echo $row['name'] ?>">
                             <input type="text" placeholder="Имя" name="number" value="<?php echo $row['number'] ?>">
@@ -45,20 +46,20 @@ if (!isset($_SESSION['name']))
     </div>
     
     <?php 
-    if(isset($_POST['submitBtn'])) {
-        require('php/db.php');
+    if(isset($_POST['submitBtn'])) { //если пользователь нажимает на кнопку Сохранить
+        require('php/db.php'); 
         $name = $_POST['name'];
         $number = $_POST['number'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         
-        $sql = "UPDATE user SET name = ?, number = ?, email = ?, password = ? WHERE name = '$user'";
-        $stmt = $mysqli->prepare($sql);
-        $stmt -> bind_param("ssss", $name, $number, $email, $password);
+        $sql = "UPDATE user SET name = ?, number = ?, email = ?, password = ? WHERE name = '$user'"; //пишем запрос к БД на обновление
+        $stmt = $mysqli->prepare($sql); //подготавливаем запрос чтобы подставить значения 
+        $stmt -> bind_param("ssss", $name, $number, $email, $password); //подставляем значения
         $stmt -> execute();
-        $_SESSION['name'] = $name;
+        $_SESSION['name'] = $name; //в случае если пользователь сменил логин, присваеваем новый и сессии
         $stmt -> store_result();
-        header("Refresh:0");
+        header("Refresh:0"); //перезагружаем страницу для отображения обновленной информации
     
         if(($stmt -> num_rows)>0){
             echo "Данные успешно обновлены";
@@ -69,9 +70,9 @@ if (!isset($_SESSION['name']))
         };
 
     }
-    if(isset($_POST['exitBtn'])){
-        session_unset();
-        header('Location: index.html');
+    if(isset($_POST['exitBtn'])){ //если пользователь нажимает на кнопку Выйти
+        session_unset(); //убираем все заданные параметры сессии
+        header('Location: index.html'); 
     }
     ?>
 </body>
