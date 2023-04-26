@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <link rel="stylesheet" href="css/forms-style.css">
+</head>
+<body>
+    <div class="form-wrapper">
+        <h2>Вход</h2>
+        <form action="php/authorization.php" class="form" method="post">
+            <input type="text" placeholder="Номер телефон/email" name="login">
+            <input type="text" placeholder="Пароль" name="password">
+            <div class="captcha"><div class="g-recaptcha" data-sitekey="6LcjR7wlAAAAABCwvj_MTukYpptnYp8nSamb-hn3"></div></div>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+</body>
+</html>
